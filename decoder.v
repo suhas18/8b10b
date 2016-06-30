@@ -40,16 +40,68 @@ always @(*)
 	begin
 	case({pop_h,pop_l})
 		{3'd3,3'd2}: begin
-          out8b = {2'b00,h3_msb[2:0],h2_lsb[2:0]};
+		  			case (h3_msb)
+		  				4'b1000: begin
+		  							if(h2_lsb == 4'b1000)
+		  								out8b = {6'b11_11_00,1'b0,1'b0};
+		  							else if (h2_lsb == 4'b1001)
+		  								out8b = {6'b11_11_00,1'b0,1'b1};
+		  							else
+		  								out8b = {4'b10_00,1'b0,h2_lsb[2:0]};
+		  						 end
+		  				4'b1001: begin
+		  							if(h2_lsb == 4'b1000)
+		  								out8b = {6'b11_11_00,1'b1,1'b0};
+		  							else if(h2_lsb == 4'b1001)
+		  								out8b = {6'b11_11_00,1'b1,1'b1};
+		  							else
+		  								out8b = {4'b10_00,1'b1,h2_lsb[2:0]};
+		  						 end
+		  				default: begin
+		  							if (h2_lsb == 4'b1000)
+		  								out8b = {4'b10_10,1'b0,h3_msb[2:0]};
+		  							else if (h2_lsb == 4'b1001)
+		  								out8b = {4'b10_10,1'b1,h3_msb[2:0]};
+		  							else
+		  								out8b = {2'b00,h3_msb[2:0],h2_lsb[2:0]};
+		  						end
+		  			endcase		  			
 					$display("pop_h has 3 1s");
 					end
-//		3'd2:
-//		3'd4:
-//		3'd1:
-//		3'd0:
-		default:$display("error");
+		{3'd2,3'd3}: begin
+						case (h2_msb)
+							4'b1000: begin
+		  								if(h3_lsb == 4'b1000)
+		  									out8b = {8'b10_00_00_00}; //no data code
+		  								else if (h3_lsb == 4'b1001)
+		  									out8b = 8'b?; //decodes to some commonly used code
+			  							else
+			  								out8b = {4'b10_01,1'b0,h3_lsb[2:0]};
+			  						 end
+		  					4'b1001: begin
+		  								if(h3_lsb == 4'b1000)
+		  									out8b = {6'b11_11_01,1'b0,1'b0};
+		  								else if(h3_lsb == 4'b1001)
+		  									out8b = {6'b11_11_01,1'b0,1'b1};
+		  								else
+		  									out8b = {4'b10_01,1'b1,h3_lsb[2:0]};
+		  						 	 end
+		  					default: begin
+		  								if (h3_lsb == 4'b1000)
+		  									out8b = {4'b10_11,1'b0,h2_msb[2:0]};
+			  							else if (h3_lsb == 4'b1001)
+			  								out8b = {4'b10_11,1'b1,h2_msb[2:0]};
+			  							else
+		  									out8b = {2'b01,h2_msb[2:0],h3_lsb[2:0]};
+		  							 end
+		  				endcase		  			
+						$display("pop_h has 2 1s");
+						end
+							
+
+		default:$display("error. decode match not found ");
 		
-	endcase
+	endcase //main case
 		
 	
 	end
@@ -64,14 +116,14 @@ module h3_decode (
 		always @(*)
 		begin
 			case (in5_i)
-				5'b00111: out = 4'b?000;
-				5'b01011: out = 4'b?001;
-				5'b01101: out = 4'b?010;
-				5'b01110: out = 4'b?011;
-				5'b10011: out = 4'b?100;
-				5'b10101: out = 4'b?101;
-				5'b10110: out = 4'b?110;
-				5'b11001: out = 4'b?111;
+				5'b00111: out = 4'b0000;
+				5'b01011: out = 4'b0001;
+				5'b01101: out = 4'b0010;
+				5'b01110: out = 4'b0011;
+				5'b10011: out = 4'b0100;
+				5'b10101: out = 4'b0101;
+				5'b10110: out = 4'b0110;
+				5'b11001: out = 4'b0111;
 				5'b11010: out = 4'b1000;
 				5'b11100: out = 4'b1001;
 				default: $display("Unmatched h3 input");
@@ -90,14 +142,14 @@ module h2_decode (
 		always @(*)
 		begin
 			case (in5_i)
-				5'b00011: out = 4'b?000;
-				5'b00101: out = 4'b?001;
-				5'b00110: out = 4'b?010;
-				5'b01010: out = 4'b?011;
-				5'b01100: out = 4'b?100;
-				5'b01001: out = 4'b?101;
-				5'b10001: out = 4'b?110;
-				5'b10010: out = 4'b?111;
+				5'b00011: out = 4'b0000;
+				5'b00101: out = 4'b0001;
+				5'b00110: out = 4'b0010;
+				5'b01010: out = 4'b0011;
+				5'b01100: out = 4'b0100;
+				5'b01001: out = 4'b0101;
+				5'b10001: out = 4'b0110;
+				5'b10010: out = 4'b0111;
 				5'b10100: out = 4'b1000;
 				5'b11000: out = 4'b1001;
 				default: $display("Unmatched h2 input");
