@@ -32,6 +32,18 @@ decoder dec0 (   .data_i(data_i),
     #5 data_i = 10'b01110_11000; //simple,9     
 //2,3
     #5 data_i = 10'b00110_10011; //simple,simple
+    #5 data_i = 10'b10100_10011; //8,simple
+    #5 data_i = 10'b00110_11100; //simple,9
+//4,1
+    #5 data_i = 10'b11101_00100; //simple,simple
+    #5 data_i = 10'b01111_01000; //4,simple
+    #5 data_i = 10'b11110_10000; //simple,4
+    #5 data_i = 10'b01111_10000; //4,4
+//1,4
+    #5 data_i = 10'b00001_11101; //simple,simple
+    #5 data_i = 10'b10000_10111; //4,simple
+    #5 data_i = 10'b00100_01111; //simple,4
+    #5 data_i = 10'b10000_01111; //4,4
     #5 $finish;
      
     end
