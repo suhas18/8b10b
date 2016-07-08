@@ -19,19 +19,28 @@ encoder_8b10b enc0 (   .data_i(data_i),
        valid_i = 0;
    
     #10 enable_i = 1;
-    #15 valid_i = 1; 
+    #15 valid_i = 1;
+    #5 valid_i = 0;
+      $monitor("valid: %b output for input %b is %b",valid_i, data_i, out10b_o);
+    #5 valid_i = 1;
     #15 data_i = 8'b0000_0001;
-	#1 $display("output is %b",out10b_o);
     #5 data_i = 8'b0000_1001; 
-    #1 $display("output is %b",out10b_o);
-    #5 data_i = 8'b0000_1000; 
-    #1 $display("output is %b",out10b_o);
-    #5 data_i = 8'b0100_1000; 
-    #1 $display("output is %b",out10b_o);
-    #5 data_i = 8'b1000_1000; 
-    #1 $display("output is %b",out10b_o);  
-    #5 data_i = 8'b1011_1000; 
-    #1 $display("output is %b",out10b_o);
+    #5 data_i = 8'b1000_1010; 
+    #5 data_i = 8'b1000_0111; 
+    #5 data_i = 8'b1111_0110; 
+    #5 data_i = 8'b1111_0010;
+//    #5 valid_i = 0;
+    #5 data_i = 8'b0110_1010;
+     #5 data_i = 8'b1001_1111;
+      
+     #5 data_i = 8'b1100_0000; //11110_00001
+     #5 data_i = 8'b1101_0000; //00001_11110
+     #5 data_i = 8'b1110_0010; //01111_00100
+     #5 data_i = 8'b1110_0111; //10000_10111
+     #5 data_i = 8'b1110_1001; //11101_10000
+	 #5 data_i = 8'b1110_1000; //11110_10000
+     #1 valid_i = 0;
+     #5 data_i = 8'b1000_0000;
     #5 $finish;
      
     end

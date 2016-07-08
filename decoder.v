@@ -150,7 +150,18 @@ always @(*)
 									 end
 						endcase
 						$display("pop_h has 1 1s");
-					 end	
+					 end
+		//unbalanced cases
+		{3'3,3'd3}: begin
+						if(h3_msb == 4'b1000)
+							//unbalanced data codes
+							out8b = {5'b11_11_1,h3_lsb[2:0]};
+						else
+							//Can also be h2_msb,h2_lsb for balance across channels
+							out8b = {3'b000,h3_msb[2:0],h3_lsb[2:0]}; 
+					end
+		{3'd2,3'd2}: $display("Possible bit flip error");
+			
 
 		default:$display("error. decode match not found ");
 		
